@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+show-in-file-manager = "*"
+python-dotenv = "*"
+pyqt6 = "*"
+pyqt6-tools = "*"
+
+[dev-packages]
+invoke = "*"
+pyinstaller = "*"
+isort = "*"
+black = "*"
+pyqt6-tools = "*"
+
+[requires]
+python_version = "3.8"

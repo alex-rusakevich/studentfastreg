@@ -1,0 +1,10 @@
+dump/
+__pycache__/
+dist/
+build/
+node_modules/
+.studentfastreg/
+
+.python-version
+deviceinfo.db
+*.spec
