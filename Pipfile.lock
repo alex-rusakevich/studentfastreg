@@ -222,11 +222,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:3ebb78df84a805d7698245025b975d9d67053cd94c79245ba4b3eb694abe68bb",
-                "sha256:dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743"
+                "sha256:1c8dc6839ddc9771412596926f24cb5a553bbd40624ee2c7e55e531542bed3b8",
+                "sha256:e8acb523c335a91822674e149b46c0399ec4d328c4d1f6e49c273da5ff0201b9"
             ],
             "markers": "python_version < '3.10'",
-            "version": "==6.8.0"
+            "version": "==6.9.0"
         },
         "invoke": {
             "hashes": [
@@ -315,14 +315,14 @@
         },
         "pyqt6": {
             "hashes": [
-                "sha256:33655db05ac2de699320f035250c21434c77144a6a2943aca3f4c579dabc3f7b",
-                "sha256:3ef68830a9b32050c30f7962c56a5927802c9193b68eaf405faecb8ce9ae10a8",
-                "sha256:d41512d66044c2df9c5f515a56a922170d68a37b3406ffddc8b4adc57181b576",
-                "sha256:fc7185d65755f26d7a6842492ec5398c92544dc4eafbbcbef1b1922aca585c96"
+                "sha256:18d1daf98d9236d55102cdadafd1056f5802f3c9288fcf7238569937b71a89f0",
+                "sha256:25bd399b4a95dce65d5f937c1aa85d3c7e14a21745ae2a4ca14c0116cd104290",
+                "sha256:740244f608fe15ee1d89695c43f31a14caeca41c4f02ac36c86dfba4a5d5813d",
+                "sha256:c128bc0f17833e324593e3db83e99470d451a197dd17ff0333927b946c935bd9"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.6.1'",
-            "version": "==6.6.0"
+            "version": "==6.4.2"
         },
         "pyqt6-plugins": {
             "hashes": [
@@ -347,12 +347,12 @@
         },
         "pyqt6-qt6": {
             "hashes": [
-                "sha256:0409aa09b8dae90d5f00ba2d9761e671dfbc54ab169cff8f4cdfecd7f664fd0f",
-                "sha256:41f1ed3eadc00540c205a0e897ae0e0fffc21b896e575214f7c5b9c86d2037d1",
-                "sha256:8dcac0bd9df13d63deafb6a61969b832c34467da4a28d2b7abf78066bfce22e6",
-                "sha256:e7df8851c93886412d890d0ecc62b39f42521861ee7a80982136d65903e1f2c5"
+                "sha256:27cc19976c872ae7111fcab8a9e9eae8c5ec5e55bfb6938a379551148b85f5b0",
+                "sha256:96f30cca49af18f6863c66576b90f2f29987dc35397994d0575b197226c5b328",
+                "sha256:b0151097aa93235676c0f83ce23916ee31ca8584bd1b45923725068404542cc2",
+                "sha256:b133bbc53e1cc05aafd78bfd3a577826481a976021d041c1c57d7dadc7de1c11"
             ],
-            "version": "==6.6.1"
+            "version": "==6.4.3"
         },
         "pyqt6-sip": {
             "hashes": [

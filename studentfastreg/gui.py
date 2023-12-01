@@ -2,10 +2,11 @@ import logging
 import os
 import sys
 import webbrowser
+from itertools import chain
 
 from PyQt6 import QtGui, QtWidgets, uic
 from PyQt6.QtCore import QObject, Qt
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QDateEdit, QLineEdit, QMessageBox, QRadioButton
 from showinfm import show_in_file_manager
 
 import studentfastreg
@@ -30,8 +31,24 @@ class MainWindow(QtWidgets.QMainWindow):
     def connectEvents(self):
         ...
 
+    @property
+    def editables(self):
+        if not self._editables:
+            self._editables = chain(
+                self.findChildren(QLineEdit),
+                self.findChildren(QRadioButton),
+                self.findChildren(QDateEdit),
+            )
+
+        logger.debug(list(self._editables))
+
+        return self._editables
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self._editables = None
+
         uic.loadUi(os.path.join(RESOURCE_PATH, "ui", "studentfastreg.ui"), self)
 
         self.centralwidget.setContentsMargins(11, 11, 11, 11)
