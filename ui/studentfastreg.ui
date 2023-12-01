@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>486</width>
+    <width>459</width>
     <height>481</height>
    </rect>
   </property>
@@ -48,7 +48,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>442</width>
+             <width>415</width>
              <height>382</height>
             </rect>
            </property>
@@ -180,8 +180,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>442</width>
-             <height>382</height>
+             <width>176</width>
+             <height>216</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -288,7 +288,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>425</width>
+             <width>236</width>
              <height>433</height>
             </rect>
            </property>
@@ -419,8 +419,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>442</width>
-             <height>382</height>
+             <width>236</width>
+             <height>218</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -527,7 +527,18 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="openFilePushButton">
+        <property name="text">
+         <string>Открыть...</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icons/folder-horizontal-open.png</normaloff>icons/folder-horizontal-open.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveAsPushButton">
         <property name="text">
          <string>Сохранить как...</string>
         </property>
