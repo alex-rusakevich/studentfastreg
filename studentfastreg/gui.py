@@ -26,15 +26,18 @@ class TryWorker(QObject):
 
 
 class MainWindow(QtWidgets.QMainWindow, object):
-    def get_editables(self):
-        if not hasattr(self, "_editables") or not self.editables:
-            self.editables = chain(
-                self.findChildren(QLineEdit),
-                self.findChildren(QRadioButton),
-                self.findChildren(QDateEdit),
+    @property
+    def editables(self):
+        if not hasattr(self, "_editables") or not self._editables:
+            self._editables = tuple(
+                chain(
+                    self.findChildren(QLineEdit),
+                    self.findChildren(QRadioButton),
+                    self.findChildren(QDateEdit),
+                )
             )
 
-        return self.editables
+        return self._editables
 
     # region Events
 
@@ -97,13 +100,15 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.openFilePushButton.setEnabled(state)
         self.saveAsPushButton.setEnabled(state)
 
-        for ed in self.get_editables():
+        for ed in self.editables:
             ed.setEnabled(state)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         uic.loadUi(os.path.join(RESOURCE_PATH, "ui", "studentfastreg.ui"), self)
+
+        self._editables = ()
 
         self.centralwidget.setContentsMargins(11, 11, 11, 11)
         self.setWindowIcon(
