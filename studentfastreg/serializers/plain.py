@@ -1,8 +1,8 @@
-import configparser
 import time
 from io import BufferedIOBase
 
-from isort import file
+import toml
+from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
 
 import studentfastreg
 from studentfastreg.serializers import FileBrokenException, SFRSerializer
@@ -12,17 +12,35 @@ class SFRPlainSerializer(SFRSerializer):
     FORMAT = "text/sfr-plain"
 
     def serialize(self, file_out: BufferedIOBase) -> None:
-        config = configparser.ConfigParser()
+        config = {}
 
-        config["metainf"] = {}
-        config["metainf"]["format"] = self.FORMAT
-        config["metainf"]["version"] = studentfastreg.__version__
-        config["metainf"]["timestamp"] = time.ctime()
+        config["meta"] = {}
+        config["meta"]["format"] = self.FORMAT
+        config["meta"]["version"] = studentfastreg.__version__
+        config["meta"]["timestamp"] = time.ctime()
 
-        config.write(file_out)
+        config["values"] = {}
+        config["values"]["line"] = {}
+        config["values"]["date"] = {}
+        config["values"]["radiobutton"] = {}
+
+        for widget in self.qt_window.editables:
+            if (
+                type(widget) == QLineEdit
+                and widget.objectName() != "qt_spinbox_lineedit"
+            ):
+                config["values"]["line"][widget.objectName()] = widget.text()
+            elif type(widget) == QDateEdit:
+                config["values"]["date"][widget.objectName()] = widget.text()
+            elif type(widget) == QRadioButton:
+                config["values"]["radiobutton"][
+                    widget.objectName()
+                ] = widget.isChecked()
+
+        toml.dump(config, file_out)
 
     def deserialize(self, file_in: BufferedIOBase) -> None:
-        config = configparser.ConfigParser()
+        config = {}
         config.read(file_in)
 
         if config["metainf"]["format"] != self.FORMAT:

@@ -8,6 +8,7 @@ show-in-file-manager = "*"
 python-dotenv = "*"
 pyqt6 = "*"
 pyqt6-tools = "*"
+toml = "*"
 
 [dev-packages]
 invoke = "*"
