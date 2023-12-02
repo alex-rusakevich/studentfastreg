@@ -9,7 +9,7 @@ from studentfastreg.serializers import FileBrokenException, SFRSerializer
 
 
 class SFRPlainSerializer(SFRSerializer):
-    FORMAT = "text/srf-plain"
+    FORMAT = "text/sfr-plain"
 
     def serialize(self, file_out: BufferedIOBase) -> None:
         config = configparser.ConfigParser()
