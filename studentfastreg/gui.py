@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import QDateEdit, QFileDialog, QLineEdit, QMessageBox, QRad
 from showinfm import show_in_file_manager
 
 import studentfastreg
+from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
 from studentfastreg.settings import BASE_DIR, LOGGING, RESOURCE_PATH
 
@@ -59,19 +60,16 @@ class MainWindow(QtWidgets.QMainWindow, object):
             None,
             "Сохранить как...",
             os.path.expanduser("~"),
-            "Незашифрованные поля данных (*.sfr)",
+            SFRSerializer.get_file_explorer_entries(),
         )
 
         if not filename:
             logger.debug("Refused to save file")
             return
 
-        serializer = None
-
         _, ext = os.path.splitext(filename)
 
-        if ext == ".sfr":
-            serializer = SFRPlainSerializer(self)
+        serializer = SFRSerializer.get_serializer_by_ext(ext)(self)
 
         self.work_thread = QThread()
         self.action_worker = Worker(serializer=serializer, filename=filename)
@@ -91,10 +89,60 @@ class MainWindow(QtWidgets.QMainWindow, object):
             lambda: logger.info("The file has been saved!")
         )
 
+    @QtCore.pyqtSlot()
+    def on_event_openFilePushButton_clicked(self):
+        class Worker(TryWorker):
+            finished = pyqtSignal()
+
+            def __init__(self, *args, **kwargs):
+                self.serializer: SFRPlainSerializer = kwargs.pop("serializer", None)
+                self.filename = kwargs.pop("filename", None)
+                super().__init__(*args, **kwargs)
+
+            def worker_fn(self):
+                self.serializer.deserialize(self.filename)
+                self.finished.emit()
+
+        filename, _ = QFileDialog.getOpenFileName(
+            None,
+            "Открыть...",
+            os.path.expanduser("~"),
+            SFRSerializer.get_file_explorer_entries(),
+        )
+
+        if not filename:
+            logger.debug("Refused to open file")
+            return
+
+        _, ext = os.path.splitext(filename)
+
+        serializer = SFRSerializer.get_serializer_by_ext(ext)(self)
+
+        self.work_thread = QThread()
+        self.action_worker = Worker(serializer=serializer, filename=filename)
+        self.action_worker.moveToThread(self.work_thread)
+
+        self.work_thread.started.connect(self.action_worker.run)
+        self.action_worker.finished.connect(self.work_thread.quit)
+        self.action_worker.finished.connect(self.action_worker.deleteLater)
+        self.work_thread.finished.connect(self.work_thread.deleteLater)
+
+        logger.info(f"Started loading data from the file '{filename}'")
+        self.setAllControlsEnabled(False)
+        self.work_thread.start()
+
+        self.work_thread.finished.connect(lambda: self.setAllControlsEnabled(True))
+        self.work_thread.finished.connect(
+            lambda: logger.info("The file has been loaded!")
+        )
+
     # endregion
 
     def connectEvents(self):
         self.saveAsPushButton.clicked.connect(self.on_event_saveAsPushButton_clicked)
+        self.openFilePushButton.clicked.connect(
+            self.on_event_openFilePushButton_clicked
+        )
 
     def setAllControlsEnabled(self, state=True):
         self.openFilePushButton.setEnabled(state)
@@ -114,7 +162,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.setWindowIcon(
             QtGui.QIcon(os.path.join(RESOURCE_PATH, "ui", "icons", "favicon.png"))
         )
-        self.setWindowTitle(f"studentfastreg v{studentfastreg.__version__}")
+        self.setWindowTitle(f"studentfastreg v{studentfastreg.__str_version__}")
 
         # region Initializing error window
         self.err_msg = QMessageBox()
