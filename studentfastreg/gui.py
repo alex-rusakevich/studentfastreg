@@ -47,12 +47,12 @@ class MainWindow(QtWidgets.QMainWindow, object):
             finished = pyqtSignal()
 
             def __init__(self, *args, **kwargs):
-                self.serializer = kwargs.pop("serializer", None)
+                self.serializer: SFRPlainSerializer = kwargs.pop("serializer", None)
                 self.filename = kwargs.pop("filename", None)
                 super().__init__(*args, **kwargs)
 
             def worker_fn(self):
-                self.serializer.serialize(open(self.filename, "w", encoding="utf-8"))
+                self.serializer.serialize(self.filename)
                 self.finished.emit()
 
         filename, _ = QFileDialog.getSaveFileName(

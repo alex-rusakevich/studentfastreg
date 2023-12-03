@@ -1,6 +1,6 @@
 import time
-from io import BufferedIOBase
 
+import py7zr
 import toml
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
 
@@ -9,37 +9,39 @@ from studentfastreg.serializers import FileBrokenException, SFRSerializer
 
 
 class SFRPlainSerializer(SFRSerializer):
-    FORMAT = "text/sfr-plain"
+    FORMAT = "application/sfr"
 
-    def serialize(self, file_out: BufferedIOBase) -> None:
-        config = {}
+    def serialize(self, file_out: str) -> None:
+        meta_dict = {}
+        meta_dict["format"] = self.FORMAT
+        meta_dict["version"] = studentfastreg.__version__
+        meta_dict["timestamp"] = time.ctime()
 
-        config["meta"] = {}
-        config["meta"]["format"] = self.FORMAT
-        config["meta"]["version"] = studentfastreg.__version__
-        config["meta"]["timestamp"] = time.ctime()
+        meta_str = toml.dumps(meta_dict)
 
-        config["values"] = {}
-        config["values"]["line"] = {}
-        config["values"]["date"] = {}
-        config["values"]["radiobutton"] = {}
+        data_dict = {}
+        data_dict["line"] = {}
+        data_dict["date"] = {}
+        data_dict["radiobutton"] = {}
 
         for widget in self.qt_window.editables:
             if (
                 type(widget) == QLineEdit
                 and widget.objectName() != "qt_spinbox_lineedit"
             ):
-                config["values"]["line"][widget.objectName()] = widget.text()
+                data_dict["line"][widget.objectName()] = widget.text()
             elif type(widget) == QDateEdit:
-                config["values"]["date"][widget.objectName()] = widget.text()
+                data_dict["date"][widget.objectName()] = widget.text()
             elif type(widget) == QRadioButton:
-                config["values"]["radiobutton"][
-                    widget.objectName()
-                ] = widget.isChecked()
+                data_dict["radiobutton"][widget.objectName()] = widget.isChecked()
 
-        toml.dump(config, file_out)
+        data_str = toml.dumps(data_dict)
 
-    def deserialize(self, file_in: BufferedIOBase) -> None:
+        with py7zr.SevenZipFile(file_out, "w") as archive:
+            archive.writestr(meta_str, "manifest.toml")
+            archive.writestr(data_str, "data.toml")
+
+    def deserialize(self, file_in: str) -> None:
         config = {}
         config.read(file_in)
 

@@ -9,6 +9,7 @@ python-dotenv = "*"
 pyqt6 = "*"
 pyqt6-tools = "*"
 toml = "*"
+py7zr = "*"
 
 [dev-packages]
 invoke = "*"
