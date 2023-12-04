@@ -4,6 +4,7 @@ import os
 import sys
 from pathlib import Path
 
+import toml
 from dotenv import load_dotenv
 
 load_dotenv("./.env", verbose=True)
@@ -58,3 +59,15 @@ logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
 
 logger.info(f"Base dir is {BASE_DIR}")
+
+# region Loading config
+CONFIG_PATH = BASE_DIR / "config.toml"
+
+CONFIG_DEFAULTS = {"openFileDirOnSave": True}
+
+CONFIG_PATH.touch()
+
+config = {**CONFIG_DEFAULTS, **toml.load(CONFIG_PATH)}
+
+toml.dump(config, open(CONFIG_PATH, "w", encoding="utf-8"))
+# endregion

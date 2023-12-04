@@ -51,8 +51,10 @@ class MainWindow(QtWidgets.QMainWindow, object):
             f"""
 Программа создана Александром Русакевичем (<a href='https://github.com/alex-rusakevich/'>https://github.com/alex-rusakevich/</a>)
 <br><br>
+Файл конфигурации: "<a href='file:///{os.path.abspath(settings.CONFIG_PATH)}'>{os.path.abspath(settings.CONFIG_PATH)}</a>"
+<br><br>
 Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>". 
-<br>
+<br><br>
 Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму 
 файлы с отчетами
 """.strip()
@@ -111,7 +113,10 @@ class MainWindow(QtWidgets.QMainWindow, object):
             lambda: logger.info("The file has been saved!")
         )
 
-        # show_in_file_manager(os.path.normpath(filename), verbose=True)
+        if settings.config["openFileDirOnSave"]:
+            QtGui.QDesktopServices.openUrl(
+                QtCore.QUrl(f"file:///{os.path.dirname(filename)}")
+            )
 
     @QtCore.pyqtSlot()
     def on_event_openFilePushButton_clicked(self):
