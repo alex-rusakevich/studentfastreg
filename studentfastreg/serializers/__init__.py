@@ -1,4 +1,4 @@
-from shutil import ExecError
+from typing import Optional
 
 from PyQt6 import QtWidgets
 
@@ -20,10 +20,10 @@ class SFRSerializer:
     def __init__(self, qt_window: QtWidgets.QMainWindow) -> None:
         self.qt_window = qt_window
 
-    def serialize(self, file_out: str) -> None:
+    def serialize(self, file_out: str, password: Optional[str] = None) -> None:
         ...
 
-    def deserialize(self, file_out: str) -> None:
+    def deserialize(self, file_out: str, password: Optional[str] = None) -> None:
         ...
 
     @staticmethod

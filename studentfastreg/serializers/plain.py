@@ -1,10 +1,10 @@
+import datetime
 import logging
-import time
 from io import TextIOWrapper
+from typing import Optional
 
 import py7zr
 import toml
-from PyQt6 import QtCore
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
 
 import studentfastreg
@@ -18,11 +18,11 @@ class SFRPlainSerializer(SFRSerializer):
     FILE_EXTENSION = ".sfr"
     FILE_EXPLORER_ENTRY_DESC = f"Файл полей данных"
 
-    def serialize(self, file_out: str) -> None:
+    def serialize(self, file_out: str, password: Optional[str] = None) -> None:
         meta_dict = {}
         meta_dict["format"] = self.FORMAT
         meta_dict["version"] = studentfastreg.__version__
-        meta_dict["timestamp"] = time.ctime()
+        meta_dict["timestamp"] = datetime.datetime.now()
 
         meta_str = toml.dumps(meta_dict)
 
@@ -38,21 +38,21 @@ class SFRPlainSerializer(SFRSerializer):
             ):
                 data_dict["line"][widget.objectName()] = widget.text()
             elif type(widget) == QDateEdit:
-                data_dict["date"][widget.objectName()] = widget.text()
+                data_dict["date"][widget.objectName()] = widget.date().toPyDate()
             elif type(widget) == QRadioButton:
                 data_dict["radiobutton"][widget.objectName()] = widget.isChecked()
 
         data_str = toml.dumps(data_dict)
 
-        with py7zr.SevenZipFile(file_out, "w", password=self.STANDARD_CODE) as archive:
+        with py7zr.SevenZipFile(file_out, "w", password=password) as archive:
             archive.writestr(meta_str, "manifest.toml")
             archive.writestr(data_str, "data.toml")
 
-    def deserialize(self, file_in: str) -> None:
-        with py7zr.SevenZipFile(file_in, "r", password=self.STANDARD_CODE) as archive:
+    def deserialize(self, file_in: str, password: Optional[str] = None) -> None:
+        with py7zr.SevenZipFile(file_in, "r", password=password) as archive:
             files = archive.readall()
 
-        logger.debug(files)
+        # logger.debug(files)
 
         meta_dict = toml.load(TextIOWrapper(files["manifest.toml"], encoding="utf8"))
         data_dict = toml.load(TextIOWrapper(files["data.toml"], encoding="utf8"))
@@ -64,7 +64,10 @@ class SFRPlainSerializer(SFRSerializer):
             )
 
         if meta_dict["version"] > studentfastreg.__version__:
-            raise VersionNotSupported("File's version is newer than the program's")
+            raise VersionNotSupported(
+                f"File's version is newer than the program's: \
+{meta_dict['version']} > {studentfastreg.__version__}"
+            )
 
         # endregion
 
@@ -74,7 +77,7 @@ class SFRPlainSerializer(SFRSerializer):
 
         for k, v in data_dict["date"].items():
             if widget := self.qt_window.findChild(QDateEdit, k):
-                widget.setDate(QtCore.QDate.fromString(v, "dd.MM.yyyy"))
+                widget.setDate(v)
 
         for k, v in data_dict["radiobutton"].items():
             if widget := self.qt_window.findChild(QRadioButton, k):
