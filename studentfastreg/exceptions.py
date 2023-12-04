@@ -6,6 +6,7 @@ import traceback
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
 
+import studentfastreg.settings as settings
 from studentfastreg.settings import RESOURCE_PATH
 
 
@@ -26,9 +27,21 @@ def show_exception_box(log_msg):
     """
     if qt_instance := QtWidgets.QApplication.instance():
         err_msg = QMessageBox()
+        err_msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
         err_msg.setIcon(QMessageBox.Icon.Critical)
         err_msg.setWindowTitle("Ошибка")
-        err_msg.setText("Произошла непредвиденная ошибка:\n\n{0}".format(log_msg))
+        err_msg.setText(
+            "Произошла непредвиденная ошибка:\n\n{0}".format(log_msg).replace(
+                "\n", "<br>"
+            )
+            + f"""
+<br><br>
+Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>". 
+<br>
+Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму 
+файлы с отчетами
+""".strip()
+        )
         err_msg.setWindowIcon(
             QtGui.QIcon(
                 os.path.join(RESOURCE_PATH, "ui", "icons", "exclamation-red.png")

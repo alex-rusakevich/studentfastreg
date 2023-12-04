@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-import webbrowser
 from itertools import chain
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
@@ -9,6 +8,7 @@ from PyQt6.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt6.QtWidgets import QDateEdit, QFileDialog, QLineEdit, QMessageBox, QRadioButton
 
 import studentfastreg
+import studentfastreg.settings as settings
 from studentfastreg import EXCEPTION_HOOK
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
@@ -41,6 +41,26 @@ class MainWindow(QtWidgets.QMainWindow, object):
             )
 
         return self._editables
+
+    def show_help(self):
+        help_msg = QMessageBox()
+        help_msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        help_msg.setIcon(QMessageBox.Icon.Information)
+        help_msg.setWindowTitle("Информация")
+        help_msg.setText(
+            f"""
+Программа создана Александром Русакевичем (<a href='https://github.com/alex-rusakevich/'>https://github.com/alex-rusakevich/</a>)
+<br><br>
+Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>". 
+<br>
+Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму 
+файлы с отчетами
+""".strip()
+        )
+        help_msg.setWindowIcon(
+            QtGui.QIcon(os.path.join(RESOURCE_PATH, "ui", "icons", "information.png"))
+        )
+        help_msg.exec()
 
     # region Events
 
@@ -144,6 +164,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
 
     def connectEvents(self):
         self.saveAsPushButton.clicked.connect(self.on_event_saveAsPushButton_clicked)
+        self.showHelpPushButton.clicked.connect(self.show_help)
         self.openFilePushButton.clicked.connect(
             self.on_event_openFilePushButton_clicked
         )
@@ -182,7 +203,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key.Key_F1:
-            webbrowser.open("https://github.com/alex-rusakevich/studentfastreg")
+            self.show_help()
         elif (
             e.key() == Qt.Key.Key_F5
             and e.modifiers() == Qt.KeyboardModifier.AltModifier
