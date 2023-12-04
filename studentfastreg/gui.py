@@ -146,7 +146,6 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.work_thread.start()
 
         self.work_thread.finished.connect(lambda: self.setAllControlsEnabled(True))
-        self.work_thread.finished.connect(lambda: self.updateProgressCounter())
         self.work_thread.finished.connect(
             lambda: logger.info("The file has been saved!")
         )
@@ -199,11 +198,28 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.work_thread.start()
 
         self.work_thread.finished.connect(lambda: self.setAllControlsEnabled(True))
+        self.work_thread.finished.connect(self.updateProgressCounter)
+        self.work_thread.finished.connect(self.setVillageCityMode)
         self.work_thread.finished.connect(
             lambda: logger.info("The file has been loaded!")
         )
 
     # endregion
+
+    def setVillageCityMode(self, country_or_city="auto"):
+        if country_or_city == "village":
+            self.councilLineEdit.setEnabled(True)
+            self.villageLineEdit.setEnabled(True)
+            self.cityLineEdit.setEnabled(False)
+        elif country_or_city == "city":
+            self.councilLineEdit.setEnabled(False)
+            self.villageLineEdit.setEnabled(False)
+            self.cityLineEdit.setEnabled(True)
+        elif country_or_city == "auto":
+            if self.villageRadioButton.isChecked():
+                self.setVillageCityMode("village")
+            else:
+                self.setVillageCityMode("city")
 
     def connectEvents(self):
         self.saveAsPushButton.clicked.connect(self.on_event_saveAsPushButton_clicked)
@@ -211,6 +227,11 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.openFilePushButton.clicked.connect(
             self.on_event_openFilePushButton_clicked
         )
+
+        self.villageRadioButton.clicked.connect(
+            lambda: self.setVillageCityMode("village")
+        )
+        self.cityRadioButton.clicked.connect(lambda: self.setVillageCityMode("city"))
 
     def setAllControlsEnabled(self, state=True):
         self.openFilePushButton.setEnabled(state)

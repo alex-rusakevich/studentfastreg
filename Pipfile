@@ -8,6 +8,7 @@ python-dotenv = "*"
 pyqt6 = "*"
 toml = "*"
 py7zr = "*"
+openpyxl = "*"
 
 [dev-packages]
 invoke = "*"

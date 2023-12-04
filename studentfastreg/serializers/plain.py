@@ -37,7 +37,7 @@ class SFRPlainSerializer(SFRSerializer):
                 type(widget) == QLineEdit
                 and widget.objectName() != "qt_spinbox_lineedit"
             ):
-                data_dict["line"][widget.objectName()] = widget.text()
+                data_dict["line"][widget.objectName()] = widget.text().strip()
             elif type(widget) == QDateEdit:
                 data_dict["date"][widget.objectName()] = widget.date().toPyDate()
             elif type(widget) == QRadioButton:
