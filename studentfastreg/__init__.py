@@ -1,6 +1,7 @@
 import os
 
 import studentfastreg.settings
+from studentfastreg.exceptions import UncaughtHook
 
 __author__ = "Alexander Rusakevich"
 
@@ -13,3 +14,5 @@ __str_version__ = (
 )
 
 __version__ = list(int(i) for i in (__str_version__.split(".")))
+
+EXCEPTION_HOOK = UncaughtHook()

@@ -8,6 +8,7 @@ import toml
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
 
 import studentfastreg
+from studentfastreg.exceptions import *
 from studentfastreg.serializers import *
 
 logger = logging.getLogger(__name__)

@@ -4,10 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-show-in-file-manager = "*"
 python-dotenv = "*"
 pyqt6 = "*"
-pyqt6-tools = "*"
 toml = "*"
 py7zr = "*"
 

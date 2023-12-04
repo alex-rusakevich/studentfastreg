@@ -3,14 +3,6 @@ from typing import Optional
 from PyQt6 import QtWidgets
 
 
-class FileBrokenException(Exception):
-    ...
-
-
-class VersionNotSupported(Exception):
-    ...
-
-
 class SFRSerializer:
     STANDARD_CODE = "tregfnsgarqhgf"
     FILE_EXTENSION = ".plain"

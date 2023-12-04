@@ -7,23 +7,25 @@ from itertools import chain
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 from PyQt6.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt6.QtWidgets import QDateEdit, QFileDialog, QLineEdit, QMessageBox, QRadioButton
-from showinfm import show_in_file_manager
 
 import studentfastreg
+from studentfastreg import EXCEPTION_HOOK
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
-from studentfastreg.settings import BASE_DIR, LOGGING, RESOURCE_PATH
+from studentfastreg.settings import RESOURCE_PATH
 
 logger = logging.getLogger(__name__)
 
 
 class TryWorker(QObject):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def run(self):
         try:
             return self.worker_fn()
         except:
-            logger.exception("")
-            sys.exit(-1)
+            EXCEPTION_HOOK.exception_hook(*sys.exc_info())
 
 
 class MainWindow(QtWidgets.QMainWindow, object):
@@ -88,6 +90,8 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.work_thread.finished.connect(
             lambda: logger.info("The file has been saved!")
         )
+
+        # show_in_file_manager(os.path.normpath(filename), verbose=True)
 
     @QtCore.pyqtSlot()
     def on_event_openFilePushButton_clicked(self):
