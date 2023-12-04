@@ -19,6 +19,8 @@ class SFRPlainSerializer(SFRSerializer):
     FILE_EXTENSION = ".sfr"
     FILE_EXPLORER_ENTRY_DESC = f"Файл полей данных"
 
+    DIRECTIONS = ["serialize", "deserialize"]
+
     def serialize(self, file_out: str, password: Optional[str] = None) -> None:
         meta_dict = {}
         meta_dict["format"] = self.FORMAT

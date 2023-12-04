@@ -121,7 +121,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
             None,
             "Сохранить как...",
             os.path.expanduser("~"),
-            SFRSerializer.get_file_explorer_entries(),
+            SFRSerializer.get_file_explorer_entries(direction="serialize"),
         )
 
         if not filename:
@@ -173,7 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
             None,
             "Открыть...",
             os.path.expanduser("~"),
-            SFRSerializer.get_file_explorer_entries(),
+            SFRSerializer.get_file_explorer_entries(direction="deserialize"),
         )
 
         if not filename:
