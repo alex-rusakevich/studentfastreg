@@ -64,6 +64,43 @@ class MainWindow(QtWidgets.QMainWindow, object):
         )
         help_msg.exec()
 
+    def updateProgressCounter(self):
+        counter = 0
+        max_minus = 0
+
+        radio_button_seqs = (
+            (self.maleRadioButton, self.femaleRadioButton),
+            (self.villageRadioButton, self.cityRadioButton),
+        )
+
+        for radio_button_seq in radio_button_seqs:
+            for radio_button in radio_button_seq:
+                if radio_button.isChecked():
+                    counter += 1
+                    break
+
+            max_minus += len(radio_button_seq) - 1
+
+        modified_editables = ()
+
+        if self.cityRadioButton.isChecked():
+            modified_editables = tuple(
+                i
+                for i in self.editables
+                if i.objectName() not in ["councilLineEdit", "villageLineEdit"]
+            )
+        elif self.villageRadioButton.isChecked():
+            modified_editables = tuple(
+                i for i in self.editables if i.objectName() != "cityLineEdit"
+            )
+
+        for widget in modified_editables:
+            if type(widget) in (QDateEdit, QLineEdit) and widget.text().strip() != "":
+                counter += 1
+
+        percent = counter / (len(modified_editables) - max_minus) * 100
+        self.progressLabel.setText(f"Заполнено на {percent:.2f}%")
+
     # region Events
 
     @QtCore.pyqtSlot()
@@ -109,6 +146,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.work_thread.start()
 
         self.work_thread.finished.connect(lambda: self.setAllControlsEnabled(True))
+        self.work_thread.finished.connect(lambda: self.updateProgressCounter())
         self.work_thread.finished.connect(
             lambda: logger.info("The file has been saved!")
         )
@@ -185,6 +223,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
         super().__init__(*args, **kwargs)
 
         uic.loadUi(os.path.join(RESOURCE_PATH, "ui", "studentfastreg.ui"), self)
+        self.updateProgressCounter()
 
         self._editables = ()
 
@@ -204,6 +243,14 @@ class MainWindow(QtWidgets.QMainWindow, object):
             )
         )
         # endregion
+
+        # region Check filled timer
+        self.filled_timer = QtCore.QTimer()
+        self.filled_timer.setInterval(1000)
+        self.filled_timer.timeout.connect(self.updateProgressCounter)
+        self.filled_timer.start()
+        # endregion
+
         self.connectEvents()
 
     def keyPressEvent(self, e):
