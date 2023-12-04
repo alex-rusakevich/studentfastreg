@@ -216,7 +216,9 @@ class MainWindow(QtWidgets.QMainWindow, object):
             self.setWindowTitle("I ❤️❤️❤️ you! :D")
 
 
-sys.argv += ["-platform", "windows:darkmode=2"]
+if settings.config["forceWinDarkMode"]:
+    sys.argv += ["-platform", "windows:darkmode=2"]
+
 app = QtWidgets.QApplication(sys.argv)
 app.setStyle("Fusion")
 window = MainWindow()
