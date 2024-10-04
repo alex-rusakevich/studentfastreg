@@ -37,6 +37,11 @@ def req(context):
 
 
 @task
+def start(context):
+    run("pipenv run python studentfastreg.py")
+
+
+@task
 def designer(context):
     run("qt6-tools designer ui/studentfastreg.ui")
 
@@ -93,6 +98,6 @@ def tag(context):
 
     if f"v{STUDENTFASTREG_VERSION}" != latest_tag:
         run(f"git tag v{STUDENTFASTREG_VERSION}")
-        run(f"git push --tags")
+        run("git push --tags")
     else:
         print("No new version, skipping")

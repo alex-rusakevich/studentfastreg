@@ -12,9 +12,11 @@ load_dotenv("./.env", verbose=True)
 
 BASE_DIR: Path = Path(
     os.environ.get(
-        "SFR_BASE_DIR", os.path.join(os.path.expanduser("~"), ".studentfastreg")
+        "SFR_BASE_DIR",
+        os.path.join(os.path.expanduser("~"), ".alerus", ".studentfastreg"),
     )
 )
+BASE_DIR.mkdir(parents=True, exist_ok=True)
 
 # region Loading config
 CONFIG_PATH = BASE_DIR / "config.toml"
@@ -64,7 +66,6 @@ LOGGING = {
     },
 }
 
-BASE_DIR.mkdir(parents=True, exist_ok=True)
 LOG_DIR.mkdir(parents=True, exist_ok=True)
 logging.config.dictConfig(LOGGING)
 

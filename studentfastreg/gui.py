@@ -1,5 +1,6 @@
 import logging
 import os
+import platform
 import sys
 from itertools import chain
 
@@ -24,7 +25,7 @@ class TryWorker(QObject):
     def run(self):
         try:
             return self.worker_fn()
-        except:
+        except Exception:
             EXCEPTION_HOOK.exception_hook(*sys.exc_info())
 
 
@@ -53,9 +54,9 @@ class MainWindow(QtWidgets.QMainWindow, object):
 <br><br>
 Файл конфигурации: "<a href='file:///{os.path.abspath(settings.CONFIG_PATH)}'>{os.path.abspath(settings.CONFIG_PATH)}</a>"
 <br><br>
-Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>". 
+Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>".
 <br><br>
-Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму 
+Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму
 файлы с отчетами
 """.strip()
         )
@@ -284,7 +285,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
             self.setWindowTitle("I ❤️❤️❤️ you! :D")
 
 
-if settings.config["forceWinDarkMode"]:
+if settings.config["forceWinDarkMode"] and platform.system() == "Windows":
     sys.argv += ["-platform", "windows:darkmode=2"]
 
 app = QtWidgets.QApplication(sys.argv)

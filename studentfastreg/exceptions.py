@@ -10,12 +10,10 @@ import studentfastreg.settings as settings
 from studentfastreg.settings import RESOURCE_PATH
 
 
-class FileBrokenException(Exception):
-    ...
+class FileBrokenException(Exception): ...
 
 
-class VersionNotSupported(Exception):
-    ...
+class VersionNotSupported(Exception): ...
 
 
 log = logging.getLogger(__name__)

@@ -16,6 +16,7 @@ pyinstaller = "*"
 isort = "*"
 black = "*"
 pyqt6-tools = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.8"
