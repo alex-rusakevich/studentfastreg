@@ -1,6 +1,5 @@
 import os
 
-import studentfastreg.settings
 from studentfastreg.exceptions import UncaughtHook
 
 __author__ = "Alexander Rusakevich"

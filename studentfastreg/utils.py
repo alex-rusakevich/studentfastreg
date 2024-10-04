@@ -10,6 +10,6 @@ class TryWorker(QObject):
     def run(self):
         try:
             return self.worker_fn()
-        except:
+        except Exception:
             logger.exception("")
             sys.exit(-1)

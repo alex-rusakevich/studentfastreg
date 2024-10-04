@@ -8,8 +8,8 @@ import toml
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
 
 import studentfastreg
-from studentfastreg.exceptions import *
-from studentfastreg.serializers import *
+from studentfastreg.exceptions import FileBrokenException, VersionNotSupported
+from studentfastreg.serializers import SFRSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 class SFRPlainSerializer(SFRSerializer):
     FORMAT = "application/sfr"
     FILE_EXTENSION = ".sfr"
-    FILE_EXPLORER_ENTRY_DESC = f"Файл полей данных"
+    FILE_EXPLORER_ENTRY_DESC = "Файл полей данных"
 
     DIRECTIONS = ["serialize", "deserialize"]
 
@@ -36,13 +36,13 @@ class SFRPlainSerializer(SFRSerializer):
 
         for widget in self.qt_window.editables:
             if (
-                type(widget) == QLineEdit
+                type(widget) is QLineEdit
                 and widget.objectName() != "qt_spinbox_lineedit"
             ):
                 data_dict["line"][widget.objectName()] = widget.text().strip()
-            elif type(widget) == QDateEdit:
+            elif type(widget) is QDateEdit:
                 data_dict["date"][widget.objectName()] = widget.date().toPyDate()
-            elif type(widget) == QRadioButton:
+            elif type(widget) is QRadioButton:
                 data_dict["radiobutton"][widget.objectName()] = widget.isChecked()
 
         data_str = toml.dumps(data_dict)

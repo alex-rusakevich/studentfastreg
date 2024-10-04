@@ -6,7 +6,7 @@ from PyQt6 import QtWidgets
 class SFRSerializer:
     STANDARD_CODE = "tregfnsgarqhgf"
     FILE_EXTENSION = ".plain"
-    FILE_EXPLORER_ENTRY_DESC = f"Plain"
+    FILE_EXPLORER_ENTRY_DESC = "Plain"
     DIRECTIONS = ["serialize", "deserialize"]
 
     qt_window = None
