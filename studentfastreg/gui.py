@@ -267,7 +267,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
         # region Initializing error window
         self.err_msg = QMessageBox()
         self.err_msg.setIcon(QMessageBox.Icon.Critical)
-        self.err_msg.setWindowTitle("Error")
+        self.err_msg.setWindowTitle("Ошибка")
         self.err_msg.setWindowIcon(
             QtGui.QIcon(
                 os.path.join(RESOURCE_PATH, "ui", "icons", "exclamation-red.png")
@@ -294,17 +294,15 @@ class MainWindow(QtWidgets.QMainWindow, object):
             self.setWindowTitle("I ❤️❤️❤️ you! :D")
 
 
-if settings.config["forceWinDarkMode"] and platform.system() == "Windows":
-    sys.argv += ["-platform", "windows:darkmode=2"]
-
-
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-app = QtWidgets.QApplication(sys.argv)
-app.setStyle("Fusion")
-window = MainWindow()
-
-
 def run_ui():
+    if settings.config["forceWinDarkMode"] and platform.system() == "Windows":
+        sys.argv += ["-platform", "windows:darkmode=2"]
+
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+    app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
+    window = MainWindow()
+
     window.show()
     app.exec()
