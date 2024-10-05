@@ -9,6 +9,7 @@ pyqt6 = "*"
 toml = "*"
 py7zr = "*"
 openpyxl = "*"
+pywin32-ctypes = {version = "*", platform_system = "== 'Windows'"}
 
 [dev-packages]
 invoke = "*"
