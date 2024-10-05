@@ -24,8 +24,8 @@ def build(context, folder_mode=False):
 --name=studentfastreg-v{STUDENTFASTREG_VERSION} \
 --noconfirm {"--onefile" if not folder_mode else ""} --windowed \
 --icon "./ui/icons/favicon.ico" \
---add-data "./studentfastreg;studentfastreg/" \
---add-data "./ui;ui/" \
+--add-data "./studentfastreg:studentfastreg/" \
+--add-data "./ui:ui/" \
 "./studentfastreg.py"'
     )
 
