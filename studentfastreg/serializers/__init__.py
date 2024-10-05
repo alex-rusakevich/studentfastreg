@@ -1,6 +1,9 @@
+from logging import getLogger
 from typing import Optional
 
 from PyQt6 import QtWidgets
+
+logger = getLogger(__name__)
 
 
 class SFRSerializer:
@@ -35,6 +38,9 @@ class SFRSerializer:
 
     @staticmethod
     def get_serializer_by_ext(ext: str):
+        logger.debug("SFRSerializer subclasses: " + str(SFRSerializer.__subclasses__()))
+        logger.debug(ext + ", " + str(SFRSerializer.__subclasses__()[0].FILE_EXTENSION))
+
         for c in SFRSerializer.__subclasses__():
             if c.FILE_EXTENSION == ext:
                 return c

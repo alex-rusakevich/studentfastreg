@@ -1,6 +1,7 @@
 import logging
 import os
 import platform
+import signal
 import sys
 from itertools import chain
 
@@ -118,18 +119,26 @@ class MainWindow(QtWidgets.QMainWindow, object):
                 self.serializer.serialize(self.filename)
                 self.finished.emit()
 
-        filename, _ = QFileDialog.getSaveFileName(
+        filename, selected_filter = QFileDialog.getSaveFileName(
             None,
             "Сохранить как...",
             os.path.expanduser("~"),
             SFRSerializer.get_file_explorer_entries(direction="serialize"),
+            options=QFileDialog.Option.DontUseNativeDialog,
         )
+
+        ext = None
+
+        for c in SFRSerializer.__subclasses__():
+            if c.FILE_EXTENSION in selected_filter:
+                ext = c.FILE_EXTENSION
 
         if not filename:
             logger.debug("Refused to save file")
             return
 
-        _, ext = os.path.splitext(filename)
+        if not filename.endswith(ext):
+            filename += ext
 
         serializer = SFRSerializer.get_serializer_by_ext(ext)(self)
 
@@ -287,6 +296,9 @@ class MainWindow(QtWidgets.QMainWindow, object):
 
 if settings.config["forceWinDarkMode"] and platform.system() == "Windows":
     sys.argv += ["-platform", "windows:darkmode=2"]
+
+
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 app = QtWidgets.QApplication(sys.argv)
 app.setStyle("Fusion")
