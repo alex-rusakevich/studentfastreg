@@ -78,3 +78,6 @@ logging.config.dictConfig(LOGGING)
 logger = logging.getLogger(__name__)
 
 logger.info(f"Base dir is {HOME_DIR}")
+
+
+ORGANIZATION = "Минский государственный лингвистический университет"

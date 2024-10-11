@@ -9,13 +9,6 @@ from PyQt6.QtWidgets import QMessageBox
 import studentfastreg.settings as settings
 from studentfastreg.settings import RESOURCES_PATH
 
-
-class FileBrokenException(Exception): ...
-
-
-class VersionNotSupported(Exception): ...
-
-
 log = logging.getLogger(__name__)
 
 

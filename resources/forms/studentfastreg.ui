@@ -53,7 +53,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-48</y>
              <width>404</width>
              <height>397</height>
             </rect>
@@ -67,7 +67,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lastNameLineEdit"/>
+             <widget class="QLineEdit" name="lastNameLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>last_name</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_2">
@@ -77,7 +81,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="firstNameLineEdit"/>
+             <widget class="QLineEdit" name="firstNameLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>first_name</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_3">
@@ -87,7 +95,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="patronymicLineEdit"/>
+             <widget class="QLineEdit" name="patronymicLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>patronymic</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_6">
@@ -103,12 +115,18 @@
                 <property name="text">
                  <string>Мужской</string>
                 </property>
+                <property name="dataset_name" stdset="0">
+                 <string>is_male</string>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="femaleRadioButton">
                 <property name="text">
                  <string>Женский</string>
+                </property>
+                <property name="dataset_name" stdset="0">
+                 <string>is_female</string>
                 </property>
                </widget>
               </item>
@@ -122,7 +140,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="dateOfBirthDateEdit"/>
+             <widget class="QDateEdit" name="dateOfBirthDateEdit">
+              <property name="dataset_name" stdset="0">
+               <string>date_of_birth</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_5">
@@ -139,6 +161,9 @@
               <property name="placeholderText">
                <string>РБ</string>
               </property>
+              <property name="dataset_name" stdset="0">
+               <string>citizenship</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -149,7 +174,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="studiesAtLineEdit"/>
+             <widget class="QLineEdit" name="studiesAtLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>studies_at</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="verticalSpacer">
@@ -190,7 +219,7 @@
              <x>0</x>
              <y>0</y>
              <width>418</width>
-             <height>378</height>
+             <height>349</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -217,6 +246,9 @@
                 <property name="placeholderText">
                  <string>AA</string>
                 </property>
+                <property name="dataset_name" stdset="0">
+                 <string>passport_series</string>
+                </property>
                </widget>
               </item>
               <item>
@@ -226,6 +258,9 @@
                 </property>
                 <property name="placeholderText">
                  <string>0000000</string>
+                </property>
+                <property name="dataset_name" stdset="0">
+                 <string>passport_num</string>
                 </property>
                </widget>
               </item>
@@ -246,6 +281,9 @@
               <property name="placeholderText">
                <string>000000A000AA0</string>
               </property>
+              <property name="dataset_name" stdset="0">
+               <string>id_num</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -256,7 +294,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="passportIssuedByLineEdit"/>
+             <widget class="QLineEdit" name="passportIssuedByLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>passport_issued_by</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_10">
@@ -266,7 +308,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="whenPassportIssuedDateEdit"/>
+             <widget class="QDateEdit" name="whenPassportIssuedDateEdit">
+              <property name="dataset_name" stdset="0">
+               <string>passport_issued_date</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="verticalSpacer_2">
@@ -305,7 +351,7 @@
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-101</y>
              <width>404</width>
              <height>450</height>
             </rect>
@@ -319,7 +365,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="countryLineEdit"/>
+             <widget class="QLineEdit" name="countryLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>country</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_12">
@@ -329,7 +379,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="regionLineEdit"/>
+             <widget class="QLineEdit" name="regionLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>region</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_13">
@@ -339,7 +393,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="districtLineEdit"/>
+             <widget class="QLineEdit" name="districtLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>district</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_24">
@@ -358,12 +416,18 @@
                 <property name="checked">
                  <bool>true</bool>
                 </property>
+                <property name="dataset_name" stdset="0">
+                 <string>is_from_city</string>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QRadioButton" name="villageRadioButton">
                 <property name="text">
                  <string>Деревня</string>
+                </property>
+                <property name="dataset_name" stdset="0">
+                 <string>is_from_village</string>
                 </property>
                </widget>
               </item>
@@ -377,7 +441,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="cityLineEdit"/>
+             <widget class="QLineEdit" name="cityLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>city_name</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_15">
@@ -390,6 +458,9 @@
              <widget class="QLineEdit" name="councilLineEdit">
               <property name="enabled">
                <bool>false</bool>
+              </property>
+              <property name="dataset_name" stdset="0">
+               <string>village_council_name</string>
               </property>
              </widget>
             </item>
@@ -405,6 +476,9 @@
               <property name="enabled">
                <bool>false</bool>
               </property>
+              <property name="dataset_name" stdset="0">
+               <string>village_name</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -415,7 +489,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="streetHouseFlatNoLineEdit"/>
+             <widget class="QLineEdit" name="streetHouseFlatNoLineEdit">
+              <property name="dataset_name" stdset="0">
+               <string>street_house_flat</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="verticalSpacer_3">
@@ -456,7 +534,7 @@
              <x>0</x>
              <y>0</y>
              <width>418</width>
-             <height>378</height>
+             <height>349</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -472,7 +550,11 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="dormAddressLineEdit"/>
+                 <widget class="QLineEdit" name="dormAddressLineEdit">
+                  <property name="dataset_name" stdset="0">
+                   <string>dorm_address</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -490,6 +572,9 @@
                   <property name="value">
                    <number>1</number>
                   </property>
+                  <property name="dataset_name" stdset="0">
+                   <string>dorm_num</string>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -504,7 +589,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="comeDateEdit"/>
+             <widget class="QDateEdit" name="comeDateEdit">
+              <property name="dataset_name" stdset="0">
+               <string>arrived_date</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_22">
@@ -514,7 +603,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="moveInDateEdit"/>
+             <widget class="QDateEdit" name="moveInDateEdit">
+              <property name="dataset_name" stdset="0">
+               <string>moves_in_date</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QLabel" name="label_23">
@@ -524,7 +617,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDateEdit" name="moveOutDateEdit"/>
+             <widget class="QDateEdit" name="moveOutDateEdit">
+              <property name="dataset_name" stdset="0">
+               <string>moves_out_date</string>
+              </property>
+             </widget>
             </item>
             <item>
              <spacer name="verticalSpacer_4">

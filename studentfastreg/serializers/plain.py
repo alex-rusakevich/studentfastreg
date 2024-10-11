@@ -10,8 +10,9 @@ import toml
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton, QSpinBox
 
 import studentfastreg
-from studentfastreg.exceptions import FileBrokenException, VersionNotSupported
 from studentfastreg.serializers import SFRSerializer
+from studentfastreg.settings import ORGANIZATION
+from studentfastreg.utils import show_error
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +29,7 @@ class SFRPlainSerializer(SFRSerializer):
         meta_dict["format"] = self.FORMAT
         meta_dict["version"] = studentfastreg.__version__
         meta_dict["timestamp"] = datetime.datetime.now()
+        meta_dict["organization"] = ORGANIZATION
 
         if password is None:
             meta_dict["encrypted"] = False
@@ -37,23 +39,19 @@ class SFRPlainSerializer(SFRSerializer):
         meta_str = toml.dumps(meta_dict)
 
         data_dict = {}
-        data_dict["line"] = {}
-        data_dict["date"] = {}
-        data_dict["switcher"] = {}
-        data_dict["number"] = {}
 
         for widget in self.qt_window.editables:
             if (
                 type(widget) is QLineEdit
                 and widget.objectName() != "qt_spinbox_lineedit"
             ):
-                data_dict["line"][widget.objectName()] = widget.text().strip()
+                data_dict[widget.property("dataset_name")] = widget.text().strip()
             elif type(widget) is QDateEdit:
-                data_dict["date"][widget.objectName()] = widget.date().toPyDate()
+                data_dict[widget.property("dataset_name")] = widget.date().toPyDate()
             elif type(widget) is QRadioButton:
-                data_dict["switcher"][widget.objectName()] = widget.isChecked()
+                data_dict[widget.property("dataset_name")] = widget.isChecked()
             elif type(widget) is QSpinBox:
-                data_dict["number"][widget.objectName()] = widget.value()
+                data_dict[widget.property("dataset_name")] = widget.value()
 
         data_str = toml.dumps(data_dict)
 
@@ -80,32 +78,46 @@ class SFRPlainSerializer(SFRSerializer):
 
         # region Check meta
         if meta_dict["format"] != self.FORMAT:
-            raise FileBrokenException(
-                f"File manifest's wrong format: {meta_dict['format']}"
-            )
+            show_error(f"Неправильный формат файла манифеста: {meta_dict['format']}")
+            return
 
         if meta_dict["version"] > studentfastreg.__version__:
-            raise VersionNotSupported(
-                f"File's version is newer than the program's: \
+            show_error(
+                f"Версия файла выше, чем версия программы: \
 {meta_dict['version']} > {studentfastreg.__version__}"
             )
+            return
+
+        if meta_dict["organization"] not in [ORGANIZATION, "any"]:
+            file_org = meta_dict["organization"]
+            show_error(
+                f'Невозможно открыть файл: он создан не для организации "{ORGANIZATION}", а для "{file_org}"'
+            )
+            return
+
         # endregion
 
-        for k, v in data_dict["line"].items():
-            if widget := self.qt_window.findChild(QLineEdit, k):
-                widget.setText(v)
+        for k, v in data_dict.items():
+            widget = self.qt_window.find_widget_by_property_value("dataset_name", k)
 
-        for k, v in data_dict["date"].items():
-            if widget := self.qt_window.findChild(QDateEdit, k):
+            if (
+                type(widget) is QLineEdit
+                and widget.objectName() != "qt_spinbox_lineedit"
+            ):
+                widget: QLineEdit
+                widget.setText(data_dict[k])
+            elif type(widget) is QDateEdit:
+                widget: QDateEdit
                 widget.setDate(v)
-
-        for k, v in data_dict["switcher"].items():
-            if widget := self.qt_window.findChild(QRadioButton, k):
-                widget.setChecked(v)
-
-        for k, v in data_dict["number"].items():
-            if widget := self.qt_window.findChild(QSpinBox, k):
-                widget.setValue(v)
+            elif type(widget) is QRadioButton:
+                widget: QRadioButton
+                widget.setChecked(data_dict[k])
+            elif type(widget) is QSpinBox:
+                widget: QSpinBox
+                widget.setValue(data_dict[k])
+            else:
+                show_error("Файл поврежден или создан для неподдерживаемой версии")
+                return
 
     def does_file_has_password(self, file_in: str):
         try:

@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QRadioButton,
     QSpinBox,
+    QWidget,
 )
 
 import studentfastreg
@@ -53,7 +54,23 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
                 )
             )
 
+            self._editables = tuple(
+                filter(lambda x: x.property("dataset_name"), self._editables)
+            )
+
+            # for ed in self._editables:
+            #     ed.setStyleSheet("background: red")
+
+        # logger.debug("Editables number = {}".format(len(self._editables)))
+
         return self._editables
+
+    def find_widget_by_property_value(self, property_name, property_value):
+        for element in self.findChildren(QWidget):
+            if element.property(property_name) == property_value:
+                return element
+
+        return None
 
     def show_help(self):
         help_msg = QMessageBox()
