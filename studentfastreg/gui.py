@@ -168,7 +168,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
             lambda: logger.info("The file has been saved!")
         )
 
-        if settings.config["openFileDirOnSave"]:
+        if settings.config["ui"]["openFileDirOnSave"]:
             QtGui.QDesktopServices.openUrl(
                 QtCore.QUrl(f"file:///{os.path.dirname(filename)}")
             )
@@ -301,7 +301,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
 
 
 def run_ui():
-    if settings.config["forceWinDarkMode"] and platform.system() == "Windows":
+    if settings.config["ui"]["forceWinDarkMode"] and platform.system() == "Windows":
         sys.argv += ["-platform", "windows:darkmode=2"]
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)

@@ -12,7 +12,7 @@ load_dotenv("./.env", verbose=True)
 
 HOME_DIR: Path = Path(
     os.environ.get(
-        "SFR_BASE_DIR",
+        "SFR_HOME_DIR",
         os.path.join(os.path.expanduser("~"), ".alerus", ".studentfastreg"),
     )
 )
@@ -24,7 +24,7 @@ BASE_DIR: Path = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), ".
 CONFIG_PATH = HOME_DIR / "config.toml"
 CONFIG_PATH.touch()
 
-CONFIG_DEFAULTS = {"openFileDirOnSave": True, "forceWinDarkMode": True}
+CONFIG_DEFAULTS = {"ui": {"openFileDirOnSave": True, "forceWinDarkMode": True}}
 
 CONFIG_PATH.touch()
 

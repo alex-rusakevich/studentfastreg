@@ -1,4 +1,5 @@
 import os
+import platform
 from io import StringIO
 
 from invoke import run, task
@@ -19,13 +20,15 @@ def build(context, folder_mode=False):
         .strip()
     )
 
+    OS_NAME = platform.system().lower()
+
     run(
         f'pyinstaller \
---name=studentfastreg-v{STUDENTFASTREG_VERSION} \
+--name=studentfastreg-v{STUDENTFASTREG_VERSION}-{OS_NAME} \
 --noconfirm {"--onefile" if not folder_mode else ""} --windowed \
---icon "./ui/icons/favicon.ico" \
---add-data "./studentfastreg:studentfastreg/" \
---add-data "./ui:ui/" \
+--icon "./resources/icons/favicon.ico" \
+--add-data "./resources:resources/" \
+--add-data "./studentfastreg/VERSION.txt:studentfastreg/" \
 "./studentfastreg.py"'
     )
 
