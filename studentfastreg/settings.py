@@ -10,16 +10,18 @@ from dotenv import load_dotenv
 load_dotenv("./.env", verbose=True)
 
 
-BASE_DIR: Path = Path(
+HOME_DIR: Path = Path(
     os.environ.get(
         "SFR_BASE_DIR",
         os.path.join(os.path.expanduser("~"), ".alerus", ".studentfastreg"),
     )
 )
-BASE_DIR.mkdir(parents=True, exist_ok=True)
+HOME_DIR.mkdir(parents=True, exist_ok=True)
+
+BASE_DIR: Path = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # region Loading config
-CONFIG_PATH = BASE_DIR / "config.toml"
+CONFIG_PATH = HOME_DIR / "config.toml"
 CONFIG_PATH.touch()
 
 CONFIG_DEFAULTS = {"openFileDirOnSave": True, "forceWinDarkMode": True}
@@ -35,9 +37,9 @@ DEBUG: bool = os.environ.get("SFR_DEBUG", False) in ["t", True, "true"]
 
 LOG_LVL: str = "DEBUG" if DEBUG else "INFO"
 
-LOG_DIR: Path = Path(os.path.join(BASE_DIR, "logs"))
+LOG_DIR: Path = Path(os.path.join(HOME_DIR, "logs"))
 
-RESOURCE_PATH = Path(getattr(sys, "_MEIPASS", os.path.abspath(".")))
+RESOURCES_PATH = Path(getattr(sys, "_MEIPASS", BASE_DIR)) / "resources"
 
 LOGGING = {
     "version": 1,
@@ -72,4 +74,4 @@ logging.config.dictConfig(LOGGING)
 
 logger = logging.getLogger(__name__)
 
-logger.info(f"Base dir is {BASE_DIR}")
+logger.info(f"Base dir is {HOME_DIR}")

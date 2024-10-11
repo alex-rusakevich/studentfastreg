@@ -21,7 +21,7 @@ import studentfastreg.settings as settings
 from studentfastreg import EXCEPTION_HOOK
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
-from studentfastreg.settings import RESOURCE_PATH
+from studentfastreg.settings import RESOURCES_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
 """.strip()
         )
         help_msg.setWindowIcon(
-            QtGui.QIcon(os.path.join(RESOURCE_PATH, "ui", "icons", "information.png"))
+            QtGui.QIcon(os.path.join(RESOURCES_PATH, "icons", "information.png"))
         )
         help_msg.exec()
 
@@ -261,14 +261,14 @@ class MainWindow(QtWidgets.QMainWindow, object):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        uic.loadUi(os.path.join(RESOURCE_PATH, "ui", "studentfastreg.ui"), self)
+        uic.loadUi(os.path.join(RESOURCES_PATH, "forms", "studentfastreg.ui"), self)
         self.updateProgressCounter()
 
         self._editables = ()
 
         self.centralwidget.setContentsMargins(11, 11, 11, 11)
         self.setWindowIcon(
-            QtGui.QIcon(os.path.join(RESOURCE_PATH, "ui", "icons", "favicon.png"))
+            QtGui.QIcon(os.path.join(RESOURCES_PATH, "icons", "favicon.png"))
         )
         self.setWindowTitle(f"studentfastreg v{studentfastreg.__str_version__}")
 
@@ -277,9 +277,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
         self.err_msg.setIcon(QMessageBox.Icon.Critical)
         self.err_msg.setWindowTitle("Ошибка")
         self.err_msg.setWindowIcon(
-            QtGui.QIcon(
-                os.path.join(RESOURCE_PATH, "ui", "icons", "exclamation-red.png")
-            )
+            QtGui.QIcon(os.path.join(RESOURCES_PATH, "icons", "exclamation-red.png"))
         )
         # endregion
 

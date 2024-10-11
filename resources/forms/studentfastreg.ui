@@ -38,7 +38,7 @@
       <widget class="QWidget" name="commonTab">
        <attribute name="icon">
         <iconset>
-         <normaloff>icons/user.png</normaloff>icons/user.png</iconset>
+         <normaloff>../icons/user.png</normaloff>../icons/user.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Общее</string>
@@ -173,7 +173,7 @@
       <widget class="QWidget" name="passportTab">
        <attribute name="icon">
         <iconset>
-         <normaloff>icons/book-brown.png</normaloff>icons/book-brown.png</iconset>
+         <normaloff>../icons/book-brown.png</normaloff>../icons/book-brown.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Паспорт</string>
@@ -189,8 +189,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>418</width>
-             <height>378</height>
+             <width>188</width>
+             <height>237</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -290,7 +290,7 @@
       <widget class="QWidget" name="movedFromTab">
        <attribute name="icon">
         <iconset>
-         <normaloff>icons/home--minus.png</normaloff>icons/home--minus.png</iconset>
+         <normaloff>../icons/home--minus.png</normaloff>../icons/home--minus.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Откуда прибыл</string>
@@ -306,7 +306,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>404</width>
+             <width>162</width>
              <height>450</height>
             </rect>
            </property>
@@ -439,7 +439,7 @@
       <widget class="QWidget" name="movedInTab">
        <attribute name="icon">
         <iconset>
-         <normaloff>icons/building--plus.png</normaloff>icons/building--plus.png</iconset>
+         <normaloff>../icons/building--plus.png</normaloff>../icons/building--plus.png</iconset>
        </attribute>
        <attribute name="title">
         <string>Куда прибыл</string>
@@ -455,8 +455,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>418</width>
-             <height>378</height>
+             <width>249</width>
+             <height>242</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -576,7 +576,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>icons/folder-horizontal-open.png</normaloff>icons/folder-horizontal-open.png</iconset>
+          <normaloff>../icons/folder-horizontal-open.png</normaloff>../icons/folder-horizontal-open.png</iconset>
         </property>
        </widget>
       </item>
@@ -587,7 +587,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>icons/disks.png</normaloff>icons/disks.png</iconset>
+          <normaloff>../icons/disks.png</normaloff>../icons/disks.png</iconset>
         </property>
        </widget>
       </item>
@@ -598,7 +598,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>icons/question.png</normaloff>icons/question.png</iconset>
+          <normaloff>../icons/question.png</normaloff>../icons/question.png</iconset>
         </property>
        </widget>
       </item>

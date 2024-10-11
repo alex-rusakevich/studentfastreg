@@ -7,7 +7,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox
 
 import studentfastreg.settings as settings
-from studentfastreg.settings import RESOURCE_PATH
+from studentfastreg.settings import RESOURCES_PATH
 
 
 class FileBrokenException(Exception): ...
@@ -41,9 +41,7 @@ def show_exception_box(log_msg):
 """.strip()
         )
         err_msg.setWindowIcon(
-            QtGui.QIcon(
-                os.path.join(RESOURCE_PATH, "ui", "icons", "exclamation-red.png")
-            )
+            QtGui.QIcon(os.path.join(RESOURCES_PATH, "icons", "exclamation-red.png"))
         )
         err_msg.exec()
 
