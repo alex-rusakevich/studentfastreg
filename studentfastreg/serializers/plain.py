@@ -18,6 +18,7 @@ class SFRPlainSerializer(SFRSerializer):
     FORMAT = "application/sfr"
     FILE_EXTENSION = ".sfr"
     FILE_EXPLORER_ENTRY_DESC = "Файл полей данных"
+    SUPPORTS_PASSWORD = True
 
     DIRECTIONS = ["serialize", "deserialize"]
 
@@ -26,6 +27,7 @@ class SFRPlainSerializer(SFRSerializer):
         meta_dict["format"] = self.FORMAT
         meta_dict["version"] = studentfastreg.__version__
         meta_dict["timestamp"] = datetime.datetime.now()
+        meta_dict["encrypted"] = False
 
         meta_str = toml.dumps(meta_dict)
 
@@ -74,7 +76,6 @@ class SFRPlainSerializer(SFRSerializer):
                 f"File's version is newer than the program's: \
 {meta_dict['version']} > {studentfastreg.__version__}"
             )
-
         # endregion
 
         for k, v in data_dict["line"].items():
