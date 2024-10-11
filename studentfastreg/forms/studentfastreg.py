@@ -22,7 +22,7 @@ from studentfastreg.forms.password_dialog import PasswordDialog
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
 from studentfastreg.settings import RESOURCES_PATH
-from studentfastreg.utils import warn_yes_no
+from studentfastreg.utils import show_error, warn_yes_no
 
 logger = logging.getLogger(__name__)
 
@@ -124,19 +124,17 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
             def __init__(self, *args, **kwargs):
                 self.serializer: SFRPlainSerializer = kwargs.pop("serializer", None)
                 self.filename = kwargs.pop("filename", None)
+                self.password = kwargs.pop("password", None)
                 super().__init__(*args, **kwargs)
 
             def worker_fn(self):
-                self.serializer.serialize(self.filename)
+                self.serializer.serialize(self.filename, self.password)
                 self.finished.emit()
 
         password = None
 
         if self.saveWithPasswordCheckBox.isChecked():
-            password_dialog = PasswordDialog()
-            password_dialog.exec()
-
-            password = password_dialog.password
+            password = PasswordDialog.getPassword()
 
         if (
             password is None
@@ -147,6 +145,15 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
             is False
         ):
             return
+
+        if password is not None:
+            # Check password meets requirements
+            if len(password) < 8:
+                show_error("Пароль должен состоять минимум из 8 символов")
+                return
+            elif password.isdigit():
+                show_error("Пароль не должен состоять из одних цифр")
+                return
 
         # region Get file name
         filename, selected_filter = QFileDialog.getSaveFileName(
@@ -206,10 +213,11 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
             def __init__(self, *args, **kwargs):
                 self.serializer: SFRPlainSerializer = kwargs.pop("serializer", None)
                 self.filename = kwargs.pop("filename", None)
+                self.password = kwargs.pop("password", None)
                 super().__init__(*args, **kwargs)
 
             def worker_fn(self):
-                self.serializer.deserialize(self.filename)
+                self.serializer.deserialize(self.filename, self.password)
                 self.finished.emit()
 
         filename, _ = QFileDialog.getOpenFileName(
@@ -224,21 +232,26 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
             return
 
         _, ext = os.path.splitext(filename)
-
+        password = None
         serializer = SFRSerializer.get_serializer_by_ext(ext)(self)
 
+        if serializer.does_file_has_password(filename):
+            password = PasswordDialog.getPassword()
+
+            if password is None:
+                show_error("Не удалось открыть файл: вы не ввели пароль")
+                return
+
+            if not serializer.is_password_correct(filename, password):
+                show_error("Не удалось открыть файл: неправильный пароль")
+                return
+
         self.work_thread = QThread()
-        self.action_worker = Worker(serializer=serializer, filename=filename)
-        self.action_worker.moveToThread(self.work_thread)
+        self.action_worker = Worker(
+            serializer=serializer, filename=filename, password=password
+        )
 
         self.work_thread.started.connect(self.action_worker.run)
-        self.action_worker.finished.connect(self.work_thread.quit)
-        self.action_worker.finished.connect(self.action_worker.deleteLater)
-        self.work_thread.finished.connect(self.work_thread.deleteLater)
-
-        logger.info(f"Started loading data from the file '{filename}'")
-        self.setAllControlsEnabled(False)
-        self.work_thread.start()
 
         self.work_thread.finished.connect(lambda: self.setAllControlsEnabled(True))
         self.work_thread.finished.connect(self.updateProgressCounter)
@@ -246,6 +259,14 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
         self.work_thread.finished.connect(
             lambda: logger.info("The file has been loaded!")
         )
+
+        self.work_thread.finished.connect(self.work_thread.deleteLater)
+        self.action_worker.finished.connect(self.work_thread.quit)
+        self.action_worker.finished.connect(self.action_worker.deleteLater)
+
+        logger.info(f"Started loading data from the file '{filename}'")
+        self.setAllControlsEnabled(False)
+        self.work_thread.start()
 
     # endregion
 

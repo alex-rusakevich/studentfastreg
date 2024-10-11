@@ -10,6 +10,7 @@ toml = "*"
 py7zr = "*"
 openpyxl = "*"
 pywin32-ctypes = {version = "*", platform_system = "== 'Windows'"}
+cryptography = "*"
 
 [dev-packages]
 invoke = "*"

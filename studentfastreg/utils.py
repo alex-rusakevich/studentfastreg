@@ -38,3 +38,16 @@ def warn_yes_no(text):
     x = reply.exec()
 
     return x == QMessageBox.StandardButton.Yes
+
+
+def show_error(text):
+    reply = QMessageBox()
+    reply.setWindowTitle("Anticopy")
+    reply.setIcon(QMessageBox.Icon.Critical)
+    reply.setText(text)
+
+    reply.setWindowIcon(
+        QtGui.QIcon(os.path.join(RESOURCES_PATH, "icons", "exclamation-red.png"))
+    )
+
+    return reply.exec()

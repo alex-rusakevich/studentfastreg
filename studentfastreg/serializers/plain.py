@@ -4,6 +4,8 @@ from io import TextIOWrapper
 from typing import Optional
 
 import py7zr
+import py7zr.exceptions
+import py7zr.py7zr
 import toml
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton, QSpinBox
 
@@ -26,7 +28,11 @@ class SFRPlainSerializer(SFRSerializer):
         meta_dict["format"] = self.FORMAT
         meta_dict["version"] = studentfastreg.__version__
         meta_dict["timestamp"] = datetime.datetime.now()
-        meta_dict["encrypted"] = False
+
+        if password is None:
+            meta_dict["encrypted"] = False
+        else:
+            meta_dict["encrypted"] = True
 
         meta_str = toml.dumps(meta_dict)
 
@@ -51,15 +57,23 @@ class SFRPlainSerializer(SFRSerializer):
 
         data_str = toml.dumps(data_dict)
 
-        with py7zr.SevenZipFile(file_out, "w", password=password) as archive:
+        with py7zr.SevenZipFile(
+            file_out,
+            "w",
+            password=password,
+            header_encryption=True if password else False,
+        ) as archive:
             archive.writestr(meta_str, "manifest.toml")
             archive.writestr(data_str, "data.toml")
 
     def deserialize(self, file_in: str, password: Optional[str] = None) -> None:
-        with py7zr.SevenZipFile(file_in, "r", password=password) as archive:
+        with py7zr.SevenZipFile(
+            file_in,
+            "r",
+            password=password,
+            header_encryption=True if password else False,
+        ) as archive:
             files = archive.readall()
-
-        # logger.debug(files)
 
         meta_dict = toml.load(TextIOWrapper(files["manifest.toml"], encoding="utf8"))
         data_dict = toml.load(TextIOWrapper(files["data.toml"], encoding="utf8"))
@@ -92,3 +106,29 @@ class SFRPlainSerializer(SFRSerializer):
         for k, v in data_dict["number"].items():
             if widget := self.qt_window.findChild(QSpinBox, k):
                 widget.setValue(v)
+
+    def does_file_has_password(self, file_in: str):
+        try:
+            with py7zr.SevenZipFile(
+                file_in,
+                "r",
+                password=None,
+            ) as archive:
+                archive.readall()
+        except py7zr.exceptions.PasswordRequired:
+            return True
+        else:
+            return False
+
+    def is_password_correct(self, file_in: str, password: str):
+        try:
+            with py7zr.SevenZipFile(
+                file_in,
+                "r",
+                password=password,
+            ) as archive:
+                archive.readall()
+        except Exception:
+            return False
+        else:
+            return True

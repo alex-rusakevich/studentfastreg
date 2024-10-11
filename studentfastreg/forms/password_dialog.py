@@ -37,3 +37,10 @@ class PasswordDialog(QtWidgets.QDialog):
     def bindEvents(self):
         self.acceptPushButton.clicked.connect(self.on_acceptPushButton_clicked)
         self.showPasswordCheckBox.clicked.connect(self.on_showPasswordCheckBox_clicked)
+
+    @staticmethod
+    def getPassword():
+        password_dialog = PasswordDialog()
+        password_dialog.exec()
+
+        return password_dialog.password
