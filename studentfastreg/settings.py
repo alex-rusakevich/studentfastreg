@@ -25,10 +25,13 @@ CONFIG_PATH = HOME_DIR / "config.toml"
 CONFIG_PATH.touch()
 
 CONFIG_DEFAULTS = {"ui": {"openFileDirOnSave": True, "forceWinDarkMode": True}}
-
 CONFIG_PATH.touch()
 
-config = {**CONFIG_DEFAULTS, **toml.load(CONFIG_PATH)}
+config = {}
+
+for k, v in {**CONFIG_DEFAULTS, **toml.load(CONFIG_PATH)}.items():
+    if type(v) is dict:
+        config[k] = v
 
 toml.dump(config, open(CONFIG_PATH, "w", encoding="utf-8"))
 # endregion
