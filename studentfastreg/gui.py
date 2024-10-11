@@ -7,7 +7,14 @@ from itertools import chain
 
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 from PyQt6.QtCore import QObject, Qt, QThread, pyqtSignal
-from PyQt6.QtWidgets import QDateEdit, QFileDialog, QLineEdit, QMessageBox, QRadioButton
+from PyQt6.QtWidgets import (
+    QDateEdit,
+    QFileDialog,
+    QLineEdit,
+    QMessageBox,
+    QRadioButton,
+    QSpinBox,
+)
 
 import studentfastreg
 import studentfastreg.settings as settings
@@ -39,6 +46,7 @@ class MainWindow(QtWidgets.QMainWindow, object):
                     self.findChildren(QLineEdit),
                     self.findChildren(QRadioButton),
                     self.findChildren(QDateEdit),
+                    self.findChildren(QSpinBox),
                 )
             )
 

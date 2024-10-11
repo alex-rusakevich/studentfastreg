@@ -20,6 +20,7 @@ BASE_DIR.mkdir(parents=True, exist_ok=True)
 
 # region Loading config
 CONFIG_PATH = BASE_DIR / "config.toml"
+CONFIG_PATH.touch()
 
 CONFIG_DEFAULTS = {"openFileDirOnSave": True, "forceWinDarkMode": True}
 

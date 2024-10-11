@@ -5,7 +5,7 @@ from typing import Optional
 
 import py7zr
 import toml
-from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton
+from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton, QSpinBox
 
 import studentfastreg
 from studentfastreg.exceptions import FileBrokenException, VersionNotSupported
@@ -32,7 +32,8 @@ class SFRPlainSerializer(SFRSerializer):
         data_dict = {}
         data_dict["line"] = {}
         data_dict["date"] = {}
-        data_dict["radiobutton"] = {}
+        data_dict["switcher"] = {}
+        data_dict["number"] = {}
 
         for widget in self.qt_window.editables:
             if (
@@ -43,7 +44,9 @@ class SFRPlainSerializer(SFRSerializer):
             elif type(widget) is QDateEdit:
                 data_dict["date"][widget.objectName()] = widget.date().toPyDate()
             elif type(widget) is QRadioButton:
-                data_dict["radiobutton"][widget.objectName()] = widget.isChecked()
+                data_dict["switcher"][widget.objectName()] = widget.isChecked()
+            elif type(widget) is QSpinBox:
+                data_dict["number"][widget.objectName()] = widget.value()
 
         data_str = toml.dumps(data_dict)
 
@@ -82,6 +85,10 @@ class SFRPlainSerializer(SFRSerializer):
             if widget := self.qt_window.findChild(QDateEdit, k):
                 widget.setDate(v)
 
-        for k, v in data_dict["radiobutton"].items():
+        for k, v in data_dict["switcher"].items():
             if widget := self.qt_window.findChild(QRadioButton, k):
                 widget.setChecked(v)
+
+        for k, v in data_dict["number"].items():
+            if widget := self.qt_window.findChild(QSpinBox, k):
+                widget.setValue(v)
