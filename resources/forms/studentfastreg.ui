@@ -189,8 +189,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>188</width>
-             <height>237</height>
+             <width>418</width>
+             <height>378</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -306,7 +306,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>162</width>
+             <width>404</width>
              <height>450</height>
             </rect>
            </property>
@@ -455,8 +455,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>249</width>
-             <height>242</height>
+             <width>418</width>
+             <height>378</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -545,6 +545,16 @@
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="saveWithPasswordCheckBox">
+      <property name="text">
+       <string>Сохранить с паролем</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item>

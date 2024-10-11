@@ -6,6 +6,7 @@ from itertools import chain
 from PyQt6 import QtCore, QtGui, QtWidgets, uic
 from PyQt6.QtCore import QObject, Qt, QThread, pyqtSignal
 from PyQt6.QtWidgets import (
+    QCheckBox,
     QDateEdit,
     QFileDialog,
     QLineEdit,
@@ -17,9 +18,11 @@ from PyQt6.QtWidgets import (
 import studentfastreg
 import studentfastreg.settings as settings
 from studentfastreg import EXCEPTION_HOOK
+from studentfastreg.forms.password_dialog import PasswordDialog
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
 from studentfastreg.settings import RESOURCES_PATH
+from studentfastreg.utils import warn_yes_no
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +39,8 @@ class TryWorker(QObject):
 
 
 class StudentfastregForm(QtWidgets.QMainWindow, object):
+    saveWithPasswordCheckBox: QCheckBox
+
     @property
     def editables(self):
         if not hasattr(self, "_editables") or not self._editables:
@@ -125,6 +130,24 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
                 self.serializer.serialize(self.filename)
                 self.finished.emit()
 
+        password = None
+
+        if self.saveWithPasswordCheckBox.isChecked():
+            password_dialog = PasswordDialog()
+            password_dialog.exec()
+
+            password = password_dialog.password
+
+        if (
+            password is None
+            and warn_yes_no(
+                """Без пароля ваши данные будут сохранены в незашифрованном виде и
+могут оказаться под угрозой несанкционированного доступа. Продолжить?"""
+            )
+            is False
+        ):
+            return
+
         # region Get file name
         filename, selected_filter = QFileDialog.getSaveFileName(
             None,
@@ -149,11 +172,6 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
         # endregion
 
         serializer = SFRSerializer.get_serializer_by_ext(ext)(self)
-
-        password = None
-
-        if serializer.SUPPORTS_PASSWORD:
-            ...
 
         self.work_thread = QThread()
         self.action_worker = Worker(
@@ -290,7 +308,7 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
 
         # region Check filled timer
         self.filled_timer = QtCore.QTimer()
-        self.filled_timer.setInterval(1000)
+        self.filled_timer.setInterval(700)
         self.filled_timer.timeout.connect(self.updateProgressCounter)
         self.filled_timer.start()
         # endregion

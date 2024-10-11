@@ -46,7 +46,7 @@ def start(context):
 
 @task
 def designer(context):
-    run("qt6-tools designer resources/forms/studentfastreg.ui")
+    run("qt6-tools designer")
 
 
 @task

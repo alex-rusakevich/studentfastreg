@@ -18,7 +18,6 @@ class SFRPlainSerializer(SFRSerializer):
     FORMAT = "application/sfr"
     FILE_EXTENSION = ".sfr"
     FILE_EXPLORER_ENTRY_DESC = "Файл полей данных"
-    SUPPORTS_PASSWORD = True
 
     DIRECTIONS = ["serialize", "deserialize"]
 
