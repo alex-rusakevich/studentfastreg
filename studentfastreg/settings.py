@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 load_dotenv("./.env", verbose=True)
 
 
+PROGRAM_NAME = "studentfastreg"
+
 HOME_DIR: Path = Path(
     os.environ.get(
         "SFR_HOME_DIR",
@@ -79,4 +81,9 @@ logger = logging.getLogger(__name__)
 
 logger.info(f"Base dir is {HOME_DIR}")
 
-ORGANIZATION = (RESOURCES_PATH / "org.txt").read_text().strip()
+if DEBUG:
+    ORGANIZATION = "Тестовая организация"
+    KMS_SERVER = "http://0.0.0.0:8888"
+else:
+    ORGANIZATION = (RESOURCES_PATH / "org.txt").read_text().strip()
+    KMS_SERVER = "http://0.0.0.0:8888"

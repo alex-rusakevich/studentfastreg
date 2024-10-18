@@ -11,6 +11,7 @@ py7zr = "*"
 openpyxl = "*"
 pywin32-ctypes = {version = "*", platform_system = "== 'Windows'"}
 cryptography = "*"
+requests = "*"
 
 [dev-packages]
 invoke = "*"
