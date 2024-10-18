@@ -4,6 +4,7 @@ dist/
 build/
 node_modules/
 .studentfastreg/
+resources/private.pem
 
 .python-version
 deviceinfo.db

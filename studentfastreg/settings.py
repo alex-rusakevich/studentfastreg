@@ -79,4 +79,4 @@ logger = logging.getLogger(__name__)
 
 logger.info(f"Base dir is {HOME_DIR}")
 
-ORGANIZATION = "Минский государственный лингвистический университет"
+ORGANIZATION = (RESOURCES_PATH / "org.txt").read_text().strip()
