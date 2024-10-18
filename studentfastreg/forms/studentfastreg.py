@@ -22,7 +22,7 @@ from studentfastreg import EXCEPTION_HOOK
 from studentfastreg.forms.password_dialog import PasswordDialog
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
-from studentfastreg.settings import RESOURCES_PATH
+from studentfastreg.settings import ORGANIZATION, RESOURCES_PATH
 from studentfastreg.utils import show_error, warn_yes_no
 
 logger = logging.getLogger(__name__)
@@ -79,14 +79,16 @@ class StudentfastregForm(QtWidgets.QMainWindow, object):
         help_msg.setWindowTitle("Информация")
         help_msg.setText(
             f"""
-Программа создана Александром Русакевичем (<a href='https://github.com/alex-rusakevich/'>https://github.com/alex-rusakevich/</a>)
+Программа создана Александром Русакевичем (<a href='https://github.com/alex-rusakevich/'>https://github.com/alex-rusakevich/</a>).
 <br><br>
-Файл конфигурации: "<a href='file:///{os.path.abspath(settings.CONFIG_PATH)}'>{os.path.abspath(settings.CONFIG_PATH)}</a>"
+Файл конфигурации: "<a href='file:///{os.path.abspath(settings.CONFIG_PATH)}'>{os.path.abspath(settings.CONFIG_PATH)}</a>".
 <br><br>
 Отчеты об ошибках хранятся в папке "<a href='file:///{os.path.abspath(settings.LOG_DIR)}'>{os.path.abspath(settings.LOG_DIR)}</a>".
 <br><br>
 Сообщить о них можно по адресу <a href="mailto:mr.alexander.rusakevich@gmail.com">mr.alexander.rusakevich@gmail.com</a>, прикрепив к письму
-файлы с отчетами
+файлы с отчетами.
+<br><br>
+Действует лицензия на имя организации "{ORGANIZATION}".
 """.strip()
         )
         help_msg.setWindowIcon(

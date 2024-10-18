@@ -19,6 +19,7 @@ isort = "*"
 black = "*"
 pyqt6-tools = "*"
 flake8 = "*"
+python-slugify = "*"
 
 [requires]
 python_version = "3.8"

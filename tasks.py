@@ -3,6 +3,9 @@ import platform
 from io import StringIO
 
 from invoke import run, task
+from slugify import slugify
+
+from studentfastreg.settings import ORGANIZATION
 
 
 @task
@@ -22,9 +25,11 @@ def build(context, folder_mode=False):
 
     OS_NAME = platform.system().lower()
 
+    org = slugify(ORGANIZATION, separator="_", lowercase=False)
+
     run(
         f'pyinstaller \
---name=studentfastreg-v{STUDENTFASTREG_VERSION}-{OS_NAME} \
+--name={org}-studentfastreg-v{STUDENTFASTREG_VERSION}-{OS_NAME} \
 --noconfirm {"--onefile" if not folder_mode else ""} --windowed \
 --icon "./resources/icons/favicon.ico" \
 --add-data "./resources:resources/" \

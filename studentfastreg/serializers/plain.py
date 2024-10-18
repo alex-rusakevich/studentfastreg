@@ -88,12 +88,12 @@ class SFRPlainSerializer(SFRSerializer):
             )
             return
 
-        if meta_dict["organization"] not in [ORGANIZATION, "any"]:
-            file_org = meta_dict["organization"]
-            show_error(
-                f'Невозможно открыть файл: он создан не для организации "{ORGANIZATION}", а для "{file_org}"'
-            )
-            return
+        # if meta_dict["organization"] != ORGANIZATION:
+        #     file_org = meta_dict["organization"]
+        #     show_error(
+        #         f'Невозможно открыть файл: он создан не для организации "{ORGANIZATION}", а для "{file_org}"'
+        #     )
+        #     return
 
         # endregion
 
