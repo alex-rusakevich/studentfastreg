@@ -8,7 +8,7 @@ from PyQt6 import QtWidgets
 import studentfastreg.settings as settings
 from studentfastreg.forms.studentfastreg import StudentfastregForm
 from studentfastreg.kms import is_org_act
-from studentfastreg.utils import show_error
+from studentfastreg.utils.ui import show_error
 
 logger = logging.getLogger(__name__)
 

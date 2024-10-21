@@ -1,20 +1,15 @@
-import base64
 import datetime
 import json
 import logging
-import os
-from io import BytesIO
 from typing import Optional, Union
 
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from PyQt6.QtWidgets import QDateEdit, QLineEdit, QRadioButton, QSpinBox
 
 import studentfastreg
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.settings import ORGANIZATION
-from studentfastreg.utils import show_error
+from studentfastreg.utils.crypto import decrypt, encrypt
+from studentfastreg.utils.ui import show_error
 
 logger = logging.getLogger(__name__)
 
@@ -60,29 +55,9 @@ class SFRPlainSerializer(SFRSerializer):
         if password is None:
             file_dict["data"] = data_dict
         else:
-            salt = os.urandom(16)
+            data = json.dumps(data_dict, ensure_ascii=False, separators=(",", ":"))
 
-            kdf = PBKDF2HMAC(
-                algorithm=hashes.SHA256(),
-                length=32,
-                salt=salt,
-                iterations=390000,
-            )
-            key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
-
-            fernet = Fernet(key)
-            enc_data_bytes = fernet.encrypt(
-                json.dumps(
-                    data_dict, ensure_ascii=False, separators=(",", ":")
-                ).encode()
-            )
-
-            data = BytesIO()
-            data.write(salt)
-            data.write(enc_data_bytes)
-            data.seek(0)
-
-            file_dict["data"] = base64.b64encode(data.read()).decode("ascii")
+            file_dict["data"] = encrypt(plaintext=data, passphrase=password)
 
         with open(file_out, "w", encoding="utf8") as f:
             json.dump(file_dict, f, ensure_ascii=False, separators=(",", ":"))
@@ -97,24 +72,8 @@ class SFRPlainSerializer(SFRSerializer):
         data = file_dict["data"]
 
         if meta_dict["encrypted"]:
-            data = base64.b64decode(data)
-
-            salt = data[:16]
-            data = data[16:]
-
-            kdf = PBKDF2HMAC(
-                algorithm=hashes.SHA256(),
-                length=32,
-                salt=salt,
-                iterations=390000,
-            )
-            key = base64.urlsafe_b64encode(kdf.derive(password.encode()))
-
-            fernet = Fernet(key)
-
-            dec_data_bytes = fernet.decrypt(data).decode()
-
-            data_dict = json.loads(dec_data_bytes)
+            data = decrypt(data, password)
+            data_dict = json.loads(data)
         else:
             data_dict = data
 

@@ -23,7 +23,7 @@ from studentfastreg.forms.password_dialog import PasswordDialog
 from studentfastreg.serializers import SFRSerializer
 from studentfastreg.serializers.plain import SFRPlainSerializer
 from studentfastreg.settings import ORGANIZATION, RESOURCES_PATH
-from studentfastreg.utils import show_error, warn_yes_no
+from studentfastreg.utils.ui import show_error, warn_yes_no
 
 logger = logging.getLogger(__name__)
 
