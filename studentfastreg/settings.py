@@ -1,10 +1,10 @@
+import json
 import logging
 import logging.config
 import os
 import sys
 from pathlib import Path
 
-import toml
 from dotenv import load_dotenv
 
 load_dotenv("./.env", verbose=True)
@@ -23,19 +23,21 @@ HOME_DIR.mkdir(parents=True, exist_ok=True)
 BASE_DIR: Path = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # region Loading config
-CONFIG_PATH = HOME_DIR / "config.toml"
+CONFIG_PATH = HOME_DIR / "config.json"
 CONFIG_PATH.touch()
 
 CONFIG_DEFAULTS = {"ui": {"openFileDirOnSave": True, "forceWinDarkMode": True}}
-CONFIG_PATH.touch()
+
+if not CONFIG_PATH.is_file() or len(CONFIG_PATH.read_text()) == 0:
+    json.dump(CONFIG_DEFAULTS, open(CONFIG_PATH, "w", encoding="utf-8"), indent=4)
 
 config = {}
 
-for k, v in {**CONFIG_DEFAULTS, **toml.load(CONFIG_PATH)}.items():
+for k, v in {**CONFIG_DEFAULTS, **json.load(CONFIG_PATH.open(encoding="utf8"))}.items():
     if type(v) is dict:
         config[k] = v
 
-toml.dump(config, open(CONFIG_PATH, "w", encoding="utf-8"))
+json.dump(config, open(CONFIG_PATH, "w", encoding="utf-8"), indent=4)
 # endregion
 
 DEBUG: bool = os.environ.get("SFR_DEBUG", False) in ["t", True, "true"]
